@@ -15,7 +15,6 @@ def convert_markdown_to_html(markdown_file, html_file):
     try:
         with open(markdown_file, 'r') as md_file:
             with open(html_file, 'w') as html_file:
-                in_list = False
                 for line in md_file:
                     line = line.rstrip()
                     if line.startswith("#"):
@@ -25,22 +24,7 @@ def convert_markdown_to_html(markdown_file, html_file):
                             start_tag = f"<h{heading_level}>"
                             end_tag = f"</h{heading_level}>"
                             line = f"{start_tag}{line_content}{end_tag}"
-                        if in_list:
-                            html_file.write("</ul>\n")
-                            in_list = False
-                    elif line.startswith("- "):
-                        if not in_list:
-                            html_file.write("<ul>\n")
-                            in_list = True
-                        line_content = line[2:].strip()
-                        line = f"<li>{line_content}</li>"
-                    else:
-                        if in_list:
-                            html_file.write("</ul>\n")
-                            in_list = False
                     html_file.write(line + '\n')
-                if in_list:
-                    html_file.write("</ul>\n")
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
@@ -60,3 +44,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     convert_markdown_to_html(markdown_file, html_file)
+    sys.exit(0)
